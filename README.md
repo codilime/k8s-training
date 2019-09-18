@@ -16,4 +16,9 @@ Autheticate `gcloud`:
 gcloud auth login
 ```
 
+Install Helm **client** (do not care about Tiller at the moment):
+```
+https://helm.sh/docs/using_helm/#installing-helm
+```
+
 Create k8s cluster
