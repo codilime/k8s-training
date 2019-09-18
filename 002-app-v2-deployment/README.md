@@ -57,3 +57,8 @@ Check if new version is loaded:
 kubectl port-forward pod/`kubectl get pod --no-headers | head -n 1 | awk '{ print $1 }'` 5000:5000
 curl 127.0.0.1:5000
 ```
+
+Clean up:
+```
+kubectl delete -f deployment.yaml
+```
