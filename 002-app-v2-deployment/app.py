@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    return 'I am {}'.format(os.uname()[1])
+    return 'I am {}\n'.format(os.uname()[1])
 
 
 app.run(host='0.0.0.0')
