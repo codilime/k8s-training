@@ -35,6 +35,49 @@ Create secret YAML:
 kubectl create secret generic vault --from-literal=password=hunter2 --dry-run -o yaml > secret.yaml
 ```
 
+Create PVC:
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dont-die
+spec:
+  resources:
+    requests:
+      storage: 200Mi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+```
+
+Create job YAML:
+```
+kubectl create job filler --image=alpine --dry-run -o yaml > job.yaml
+```
+
+Add command:
+```
+command:
+- sh
+- -c
+- touch /media/hdd/what && touch /media/hdd/is && touch /media/hdd/that
+```
+
+Define PVC volume:
+```
+volumes:
+- name: hdd
+  persistentVolumeClaim:
+    claimName: dont-die
+```
+
+Mount PVC:
+```
+volumeMounts:
+- name: hdd
+  mountPath: /media/hdd
+```
+
 Create the resources:
 ```
 kubectl apply -f cm1.yaml -f cm2.yaml -f secret.yaml
@@ -53,13 +96,18 @@ volumeMounts:
   mountPath: /media/one
 - name: second
   mountPath: /media/two
+- name: hdd
+  mountPath: /media/hdd
 volumes:
 - name: first
-configMap:
-  name: cm1
+  configMap:
+    name: cm1
 - name: second
-configMap:
-  name: cm2
+  configMap:
+    name: cm2
+- name: hdd
+  persistentVolumeClaim:
+    claimName: hdd
 ```
 
 Check if this worked:
@@ -71,9 +119,8 @@ $ curl service-ip:5000/env?name=PASSWORD
 $ curl service-ip:5000/dir?path=media
 $ curl service-ip:5000/dir?path=media/one
 $ curl service-ip:5000/dir?path=media/two
+$ curl service-ip:5000/dir?path=media/hdd
 ```
-
-**TODO(kwapik):** Add PVC and job to fill it
 
 Clean up:
 ```
