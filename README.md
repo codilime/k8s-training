@@ -11,9 +11,14 @@ Install `kubectl`:
 https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-on-linux
 ```
 
-Autheticate `gcloud`:
+Authenticate `gcloud`:
 ```
 gcloud auth login
+```
+
+Configure docker to use gcloud for authentication to `gcr.io` registries:
+```
+gcloud auth configure-docker
 ```
 
 Install Helm **client** (do not care about Tiller at the moment):
