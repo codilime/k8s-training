@@ -9,11 +9,51 @@ helm init --service-account=tiller --wait
 
 Install DokuWiki:
 ```
-helm install --set service.type=NodePort stable/dokuwiki
+helm install --name test --set service.type=NodePort stable/dokuwiki
 ```
 
 Change app svc type to NodePort
-**TODO(kwapik):** provide command
+```
+kubectl edit service app
+```
 
+Install nginx ingress:
+```
+helm install stable/nginx-ingress
+```
 
-**TODO(kwapik):** provide ingress config
+Apply ingress 'config':
+```
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: my-ingress-wiki
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: test-dokuwiki
+          servicePort: 80
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: my-ingress-app
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /app(/|$)(.*)
+        backend:
+          serviceName: app
+          servicePort: 5000
+```
