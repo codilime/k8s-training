@@ -20,7 +20,7 @@ def env():
 @app.route('/dir')
 def file():
     path = request.args.get('path')
-    listing = subprocess.call('ls {}'.format(path), shell=True)
+    listing = subprocess.check_output(['ls', path])
     return 'Dir {}: {}\n'.format(path, listing)
 
 

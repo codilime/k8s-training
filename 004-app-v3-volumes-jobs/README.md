@@ -62,7 +62,6 @@ configMap:
   name: cm2
 ```
 
-**TODO(kwapik):** Fix the `/dir` output.
 Check if this worked:
 ```
 kubectl get pods
