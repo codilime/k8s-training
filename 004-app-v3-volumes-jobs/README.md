@@ -107,7 +107,7 @@ volumes:
     name: cm2
 - name: hdd
   persistentVolumeClaim:
-    claimName: hdd
+    claimName: dont-die
 ```
 
 Check if this worked:
