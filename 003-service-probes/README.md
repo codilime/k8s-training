@@ -21,7 +21,6 @@ kubectl run curler --image=pstauffer/curl --restart=Never -it -- sh
 $ for x in `seq 1 10`; do curl service-ip:5000; done
 ```
 
-**TODO(kwapik):** Add debug=true to app:v2 to see headers?
 Add liveness probe:
 ```
 livenessProbe:
