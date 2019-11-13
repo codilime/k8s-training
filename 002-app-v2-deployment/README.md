@@ -2,7 +2,7 @@
 
 Set image name
 ```
-IMAGE=gcr.io/project-name/app:v1
+IMAGE="gcr.io/$(gcloud config list --format 'value(core.project)' | tr -d '\n')/app:v1"
 ```
 
 Create Deployment YAML:
@@ -24,7 +24,7 @@ kubectl get pods
 
 Set new image name
 ```
-IMAGE=gcr.io/project-name/app:v2
+IMAGE="gcr.io/$(gcloud config list --format 'value(core.project)' | tr -d '\n')/app:v2"
 ```
 
 Build docker image
