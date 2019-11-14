@@ -2,7 +2,7 @@
 
 Set image name
 ```
-IMAGE=gcr.io/project-name/app:v1
+IMAGE="gcr.io/$(gcloud config list --format 'value(core.project)' | tr -d '\n')/app:v1"
 ```
 
 Build docker image

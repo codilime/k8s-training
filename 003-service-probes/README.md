@@ -2,7 +2,7 @@
 
 Set image name
 ```
-IMAGE=gcr.io/project-name/app:v2
+IMAGE="gcr.io/$(gcloud config list --format 'value(core.project)' | tr -d '\n')/app:v2"
 ```
 
 Create Deployment/Service YAML:
@@ -21,7 +21,6 @@ kubectl run curler --image=pstauffer/curl --restart=Never -it -- sh
 $ for x in `seq 1 10`; do curl service-ip:5000; done
 ```
 
-**TODO(kwapik):** Add debug=true to app:v2 to see headers?
 Add liveness probe:
 ```
 livenessProbe:
