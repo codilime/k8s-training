@@ -21,7 +21,7 @@ def env():
 def file():
     path = request.args.get('path')
     listing = subprocess.check_output(['ls', path])
-    return 'Dir {}: {}\n'.format(path, listing.decode('utf-8'))
+    return '{} - Dir {}: {}\n'.format(os.uname()[1], path, listing.decode('utf-8'))
 
 
 app.run(host='0.0.0.0')
