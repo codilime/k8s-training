@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  creationTimestamp: null
+  name: checker
+spec:
+  template:
+    metadata:
+      creationTimestamp: null
+    spec:
+      containers:
+      - image: gcr.io/k8s-trainers/checker
+        name: checker
+        resources: {}
+      restartPolicy: Never
+      serviceAccountName: all-seeing-eye
+status: {}
