@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-end
+  labels:
+    app: front-end
+    zadanie: kubernetes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: front-end
+  template:
+    metadata:
+      labels:
+        app: front-end
+    spec:
+      initContainers:
+      - name: static-init
+        image: gcr.io/k8s-trainers/init-static
+        volumeMounts:
+        - mountPath: "/front-app/static"
+          name: static
+      containers:
+      - name: front-end
+        image: gcr.io/k8s-trainers/front-end
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - mountPath: "/front-app/static"
+          name: static
+        env:
+        - name: REDIS_PASS
+          valueFrom:
+            secretKeyRef:
+              name: redis-pass
+              key: pass
+      volumes:
+      - name: static
+        persistentVolumeClaim:
+          claimName: front-end-pvc
+

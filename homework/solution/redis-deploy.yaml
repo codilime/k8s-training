@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis-deployment
+  labels:
+    app: redis
+    zadanie: kubernetes
+spec:
+  serviceName: redis
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+        zadanie: kubernetes
+    spec:
+      containers:
+      - name: redis
+        image: redis:3.2-alpine
+        args:
+        - "--requirepass"
+        - "$(REDIS_PASS)"
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - mountPath: "/data"
+          name: redis-data
+        env:
+        - name: REDIS_PASS
+          valueFrom:
+            secretKeyRef:
+              name: redis-pass
+              key: pass
+      volumes:
+      - name: redis-data
+        persistentVolumeClaim:
+          claimName: redis-pvc
